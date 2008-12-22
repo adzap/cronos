@@ -24,7 +24,7 @@ you are after instead of trying to remember the cron syntax and conventions.
 
   cron.every(6).hours.on('15th').of(:january).to_s => '0 0,6,12,18 15 1 *' 
 
-  cron.every(20).minutes.on(15..18).of(:jan, :feb, :mar).to_s => '
+  cron.every(20).minutes.on(15..18).of(:jan, :feb, :mar).to_s => '0,20,40 * 15-18 1,2,3 *'
 
   cron.at(14.45).on_days(:monday, :tuesday).to_s => '45 14 * * 1,2'
   
