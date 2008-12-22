@@ -7,48 +7,87 @@ module Cronos
 
     DAYS = [:sun, :mon, :tue, :wed, :thu, :fri, :sat]
 
-    def initialize
-      # @min, @hour, @day, @month, @dow = ['*'] * 5
-    end
-
+    # Time:
+    #   at(12)
+    #   at(1.30)
+    #   at('01.30')
+    #   at(14.30)
+    #   at(2).pm
     def at(time)
       @hour, @min  = *time.to_s.split('.')
-      @min = @min.ljust(2, '0') if @min
-      raise "invalid time for 'at'" if @min && @min.to_i > 59
+      @hour = @hour.to_i
+      raise "invalid hour value for 'at'" if @hour > 23 
+
+      if @min
+        @min = @min.ljust(2, '0').to_i
+        raise "invalid minute value for 'at'" if @min > 59
+      end
       @min ||= 0
       self
     end
 
+    # Repeats an interval:
+    #   every(10).minutes
+    #   every(6).hours
+    #   every(2).months
+    #
     def every(multiple)
       Cronos::RepeatInterval.new(multiple, self)
     end
 
-    def on(*days)
-      range = days.first.is_a?(Range)
-      days = days.first if range 
-      set = days.collect {|day| day.to_s.to_i }
-      @day = range ? "#{set.first}-#{set.last}" : set.join(',')
+    # Days of month:
+    #   on(13)
+    #   on('13th')
+    #   on(13..17)
+    #   on_the('13th')
+    #
+    def on(*args)
+      if args.first.is_a?(Range)
+        range = args.first
+        @day = "#{range.first.to_i}-#{range.last.to_i}"
+      else
+        list = args.collect {|day| day.to_s.to_i }
+        @day = list.join(',')
+      end 
       self
     end
     alias on_the on
 
-    def days(*days)
-      set = days.collect {|day| DAYS.index(day.to_s.downcase[0..2].to_sym) }
-      @dow = set.join(',')
+    # Days of the week:
+    #   days(:monday)
+    #   days('Monday')
+    #   days(:mon)
+    #   on_day(:monday)
+    #   days(:mon, :tues)
+    #   on_days(:mon, :tues)
+    #
+    def days(*args)
+      list = args.collect {|day| DAYS.index(day.to_s.downcase[0..2].to_sym) }
+      @dow = list.join(',')
       self
     end
     alias on_days days
+    alias on_day days
 
-    def of(*months)
-      months.collect! {|month| MONTHS.index(month.to_s.downcase[0..2].to_sym) + 1 unless month.is_a?(Fixnum) }
-      @month = months.join(',') 
+    # Months:
+    #   of(:january)
+    #   of('January')
+    #   of(:jan
+    #   of(:jan, :feb, :mar)
+    #   of_months(1, 2, 3)
+    #
+    def of(*args)
+      list = args.collect {|month| MONTHS.index(month.to_s.downcase[0..2].to_sym) + 1 unless month.is_a?(Fixnum) }
+      @month = list.join(',') 
       self
     end
+    alias of_months of
 
     def am
       self
     end
     
+    # Modifies hour to be in 2nd half of day
     def pm
       @hour = hour.to_i + 12 if hour.to_i < 12
       self
