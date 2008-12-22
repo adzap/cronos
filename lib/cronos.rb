@@ -1,9 +1,5 @@
 module Cronos
 
-  def self.task(&block)
-    Interval.new(&block) 
-  end
-
   class Interval
     attr_accessor :min, :hour, :day, :month, :dow
 
