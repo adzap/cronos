@@ -1,0 +1,30 @@
+== cronos
+
+A Ruby DSL for outputting Cron intervals. 
+
+Using a natural syntax to write cron task intervals assists in generating the correct cron interval
+you are after instead of trying to remember the cron syntax and conventions.
+
+
+=== Examples
+
+  cron = Cronos::Interval.new
+  
+  cron.hourly.to_s => '0 * * * *'
+
+  cron.daily.to_s => '0 0 * * *'
+  
+  cron.weekly.to_s => '0 0 * * 0'
+
+  cron.weekdays.at(12.30).to_s => '30 12 * * 1-5'
+  
+  cron.weekends.at(12.30).to_s => '30 12 * * 0,6'
+
+  cron.at(1.30).pm.daily.to_s => '30 13 * * *'
+
+  cron.every(6).hours.on('15th').of(:january).to_s => '0 0,6,12,18 15 1 *' 
+
+  cron.every(20).minutes.on(15..18).of(:jan, :feb, :mar).to_s => '
+
+  cron.at(14.45).on_days(:monday, :tuesday).to_s => '45 14 * * 1,2'
+  
