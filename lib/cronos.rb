@@ -91,12 +91,16 @@ module Cronos
     alias once_a_month monthly
 
     def weekdays
-      @dow = '1-5'
+      @min  = 0 if @min  == '*'
+      @hour = 0 if @hour == '*'
+      @dow  = '1-5'
       self
     end
     
     def weekends
-      @dow = '0,6'
+      @min  = 0 if @min  == '*'
+      @hour = 0 if @hour == '*'
+      @dow  = '0,6'
       self
     end
 

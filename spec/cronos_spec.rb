@@ -37,12 +37,12 @@ describe Cronos::Interval do
     interval.monthly.on_the('15th').at(3.30).to_s.should  == '30 3 15 * *'
   end
 
-  it "should generate '* * * * 1-5' for 'weekdays'" do
-    interval.weekdays.to_s.should  == '* * * * 1-5'
+  it "should generate '0 0 * * 1-5' for 'weekdays'" do
+    interval.weekdays.to_s.should  == '0 0 * * 1-5'
   end
   
-  it "should generate '* * * * 0,6' for 'weekends'" do
-    interval.weekends.to_s.should  == '* * * * 0,6'
+  it "should generate '0 0 * * 0,6' for 'weekends'" do
+    interval.weekends.to_s.should  == '0 0 * * 0,6'
   end
 
   it "should generate '0,10,20,30,40,50 * * * *' for 'every(10).minutes'" do
