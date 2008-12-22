@@ -1,5 +1,4 @@
 module Cronos
-  VERSION = '0.1.0'
 
   def self.task(&block)
     Interval.new(&block) 
@@ -60,17 +59,17 @@ module Cronos
     end
 
     def hourly
-      @min = 0
+      @min  = 0
       @hour = '*'
       self
     end
 
     def daily
-      @min  = 0 if @min  == '*'
-      @hour = 0 if @hour == '*'
-      @day  = '*'
-      @month  = '*'
-      @dow  = '*'
+      @min   = 0 if @min  == '*'
+      @hour  = 0 if @hour == '*'
+      @day   = '*'
+      @month = '*'
+      @dow   = '*'
       self
     end
     alias once_a_day daily
