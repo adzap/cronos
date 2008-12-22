@@ -28,3 +28,6 @@ you are after instead of trying to remember the cron syntax and conventions.
 
   cron.at(14.45).on_days(:monday, :tuesday).to_s => '45 14 * * 1,2'
   
+== Credits
+
+Adam Meehan (http://duckpunching.com, adam.meehan@gmail.com)
