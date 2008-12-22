@@ -32,7 +32,7 @@ module Cronos
     #   every(2).months
     #
     def every(multiple)
-      Cronos::RepeatInterval.new(multiple, self)
+      RepeatInterval.new(multiple, self)
     end
 
     # Days of month:
@@ -147,52 +147,53 @@ module Cronos
       "#{min || '*'} #{hour || '*'} #{day || '*'} #{month || '*'} #{dow || '*'}"
     end
 
+    class RepeatInterval
+
+      def initialize(multiple, interval)
+        @multiple, @interval = multiple, interval
+      end
+
+      def minutes
+        raise 'Multiple of minutes will not fit into an hour' if (60 % @multiple) > 0
+        calculate_intervals(60)
+        @interval.min = self 
+        @interval
+      end
+      
+      def hours
+        raise 'Multiple of hours will not fit into a day' if (24 % @multiple) > 0
+        calculate_intervals(24)
+        @interval.min  = 0
+        @interval.hour = self 
+        @interval
+      end
+
+      def months
+        raise 'Multiple of months will not fit into a year' if (12 % @multiple) > 0
+        calculate_intervals(12, 1)
+        @interval.min  ||= 0
+        @interval.hour ||= 0
+        @interval.day  ||= 1
+        @interval.month = self 
+        @interval
+      end
+
+      def calculate_intervals(base, initial = 0)
+        repeats = (base / @multiple) - 1
+        set = [initial]
+        1.upto(repeats) {|factor| set << (factor * @multiple + initial) }
+        @intervals = set
+      end
+
+      def to_s
+        @intervals.join(',')
+      end
+
+      def to_a
+        @intervals
+      end
+    end 
+
   end
 
-  class RepeatInterval
-
-    def initialize(multiple, interval)
-      @multiple, @interval = multiple, interval
-    end
-
-    def minutes
-      raise 'Multiple of minutes will not fit into an hour' if (60 % @multiple) > 0
-      calculate_intervals(60)
-      @interval.min = self 
-      @interval
-    end
-    
-    def hours
-      raise 'Multiple of hours will not fit into a day' if (24 % @multiple) > 0
-      calculate_intervals(24)
-      @interval.min  = 0
-      @interval.hour = self 
-      @interval
-    end
-
-    def months
-      raise 'Multiple of months will not fit into a year' if (12 % @multiple) > 0
-      calculate_intervals(12, 1)
-      @interval.min  ||= 0
-      @interval.hour ||= 0
-      @interval.day  ||= 1
-      @interval.month = self 
-      @interval
-    end
-
-    def calculate_intervals(base, initial = 0)
-      repeats = (base / @multiple) - 1
-      set = [initial]
-      1.upto(repeats) {|factor| set << (factor * @multiple + initial) }
-      @intervals = set
-    end
-
-    def to_s
-      @intervals.join(',')
-    end
-
-    def to_a
-      @intervals
-    end
-  end 
 end
