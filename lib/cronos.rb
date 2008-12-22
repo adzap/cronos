@@ -83,7 +83,7 @@ module Cronos
     def monthly
       @min   = 0 if @min  == '*'
       @hour  = 0 if @hour == '*'
-      @day   = '1'
+      @day   = 1
       @month = '*'
       @dow   = '*'
       self
