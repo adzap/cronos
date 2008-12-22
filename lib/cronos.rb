@@ -8,7 +8,7 @@ module Cronos
     DAYS = [:sun, :mon, :tue, :wed, :thu, :fri, :sat]
 
     def initialize
-      @min, @hour, @day, @month, @dow = ['*'] * 5
+      # @min, @hour, @day, @month, @dow = ['*'] * 5
     end
 
     def at(time)
@@ -56,56 +56,56 @@ module Cronos
 
     def hourly
       @min  = 0
-      @hour = '*'
+      @hour = nil
       self
     end
 
     def daily
-      @min   = 0 if @min  == '*'
-      @hour  = 0 if @hour == '*'
-      @day   = '*'
-      @month = '*'
-      @dow   = '*'
+      @min   ||= 0
+      @hour  ||= 0
+      @day   = nil
+      @month = nil
+      @dow   = nil
       self
     end
     alias once_a_day daily
 
     def weekly
-      @min   = 0 if @min  == '*'
-      @hour  = 0 if @hour == '*'
-      @day   = '*'
-      @month = '*'
-      @dow   = '0'
+      @min   ||= 0
+      @hour  ||= 0
+      @day   = nil
+      @month = nil
+      @dow   = 0
       self
     end
     alias once_a_week weekly
     
     def monthly
-      @min   = 0 if @min  == '*'
-      @hour  = 0 if @hour == '*'
+      @min   ||= 0
+      @hour  ||= 0
       @day   = 1
-      @month = '*'
-      @dow   = '*'
+      @month = nil
+      @dow   = nil
       self
     end
     alias once_a_month monthly
 
     def weekdays
-      @min  = 0 if @min  == '*'
-      @hour = 0 if @hour == '*'
+      @min  ||= 0
+      @hour ||= 0
       @dow  = '1-5'
       self
     end
     
     def weekends
-      @min  = 0 if @min  == '*'
-      @hour = 0 if @hour == '*'
+      @min  ||= 0
+      @hour ||= 0
       @dow  = '0,6'
       self
     end
 
     def to_s
-      "#{min} #{hour} #{day} #{month} #{dow}"
+      "#{min || '*'} #{hour || '*'} #{day || '*'} #{month || '*'} #{dow || '*'}"
     end
 
   end
@@ -126,7 +126,7 @@ module Cronos
     def hours
       raise 'Multiple of hours will not fit into a day' if (24 % @multiple) > 0
       calculate_intervals(24)
-      @interval.min = 0
+      @interval.min  = 0
       @interval.hour = self 
       @interval
     end
@@ -134,9 +134,9 @@ module Cronos
     def months
       raise 'Multiple of months will not fit into a year' if (12 % @multiple) > 0
       calculate_intervals(12, 1)
-      @interval.min = 0
-      @interval.hour = 0
-      @interval.day = 1
+      @interval.min  ||= 0
+      @interval.hour ||= 0
+      @interval.day  ||= 1
       @interval.month = self 
       @interval
     end
