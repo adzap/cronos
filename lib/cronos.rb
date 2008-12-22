@@ -73,9 +73,9 @@ module Cronos
     def weekly
       @min   ||= 0
       @hour  ||= 0
+      @dow   ||= 0
       @day   = nil
       @month = nil
-      @dow   = 0
       self
     end
     alias once_a_week weekly
