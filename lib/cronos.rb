@@ -13,23 +13,18 @@ module Cronos
     #   at('01.30')
     #   at(14.30)
     #   at('2pm')
+    #
     def at(time)
-      meridian = /pm|am/i.match(time.to_s)[0].downcase rescue nil
-      @hour, @min = *time.to_s.split('.')
-      @hour = @hour.to_i
+      @hour, @min, meridian = parse_time(time)
+
       raise "invalid hour value for 'at'" if @hour > 12 && meridian
+      raise "invalid minute value for 'at'" if @min > 59
         
       case meridian
         when 'am': @hour = 0 if @hour == 12 
         when 'pm': @hour += 12 if @hour < 12
       end
       raise "invalid hour value for 'at'" if @hour > 23
-
-      if @min
-        @min = @min.ljust(2, '0').to_i
-        raise "invalid minute value for 'at'" if @min > 59
-      end
-      @min ||= 0
       self
     end
 
@@ -140,6 +135,19 @@ module Cronos
 
     def to_s
       "#{min || '*'} #{hour || '*'} #{day || '*'} #{month || '*'} #{dow || '*'}"
+    end
+
+    private
+
+    def parse_time(time)
+      meridian = /pm|am/i.match(time.to_s)[0].downcase rescue nil
+      hour, min = *time.to_s.split('.')
+
+      hour = hour.to_i
+      min = min.strip.ljust(2, '0').to_i if min
+      min ||= 0
+
+      return hour, min, meridian
     end
 
     class RepeatInterval
