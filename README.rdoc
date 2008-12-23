@@ -1,4 +1,4 @@
-== cronos
+= Cronos
 
 A Ruby DSL for outputting Cron intervals. 
 
@@ -6,7 +6,7 @@ Using a natural syntax to write cron task intervals assists in generating the co
 you are after instead of trying to remember the cron syntax and conventions.
 
 
-=== Examples
+== Examples
 
   cron = Cronos::Interval.new
   
@@ -27,6 +27,31 @@ you are after instead of trying to remember the cron syntax and conventions.
   cron.every(20).minutes.on(15..18).of(:jan, :feb, :mar).to_s => '0,20,40 * 15-18 1,2,3 *'
 
   cron.at(14.45).on_days(:monday, :tuesday).to_s => '45 14 * * 1,2'
+
+=== Caveats
+
+Certain combinations produce unintuitive results. They should be obvious but just in case I will
+list some. Such as
+
+  weekly.on_days(:monday, :tuesday) 
+
+Will actually run the task *twice* weekly
+
+TODO: more weird stuff?
+
+Also cron itself allows days of month and days of week to be set. These are independent of each other.
+
+For example:
+
+  on_the('15th').of(:jan).on_days(:mon, :tue)
+
+This will be run on the 15th of January AND every Monday and Tuesday of January, so be aware. Though it
+is a strange combination anyway, the result is the union of both and not the intersection.
+
+
+== Install
+
+  sudo gem install adzap-cronos -s http://gems.github.com
   
 == Credits
 
