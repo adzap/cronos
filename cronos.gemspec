@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors = ["Adam Meehan"]
   s.autorequire = %q{cronos}
   s.date = %q{2008-12-23}
-  s.description = %q{A Ruby DSL for generating cron intervals}
+  s.description = %q{Tool for generating cron intervals using a natural syntax}
   s.email = %q{adam.meehan@gmail.com}
   s.extra_rdoc_files = ["README.rdoc", "LICENSE", "TODO"]
   s.files = ["LICENSE", "README.rdoc", "Rakefile", "TODO", "lib/cronos.rb", "spec/cronos_spec.rb", "spec/spec_helper.rb"]
@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/adzap/cronos}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.1}
-  s.summary = %q{A Ruby DSL for generating cron intervals}
+  s.summary = %q{Tool for generating cron intervals using a natural syntax}
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
