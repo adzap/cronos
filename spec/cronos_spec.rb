@@ -33,7 +33,7 @@ describe Cronos::Interval do
     interval.monthly.at(3.30).to_s.should  == '30 3 1 * *'
   end
 
-  it "should generate '30 3 15 * *' for 'monthly.on_the('15th).at(3.30)'" do
+  it "should generate '30 3 15 * *' for 'monthly.on_the('15th').at(3.30)'" do
     interval.monthly.on_the('15th').at(3.30).to_s.should  == '30 3 15 * *'
   end
 
