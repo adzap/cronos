@@ -9,7 +9,7 @@ GEM_VERSION = "0.2.0"
 AUTHOR = "Adam Meehan"
 EMAIL = "adam.meehan@gmail.com"
 HOMEPAGE = "http://github.com/adzap/cronos"
-SUMMARY = "A Ruby DSL for generating cron intervals"
+SUMMARY = "Tool for generating cron intervals using a natural syntax"
 
 spec = Gem::Specification.new do |s|
   s.name = GEM
