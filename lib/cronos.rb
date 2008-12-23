@@ -12,11 +12,18 @@ module Cronos
     #   at(1.30)
     #   at('01.30')
     #   at(14.30)
-    #   at(2).pm
+    #   at('2pm')
     def at(time)
-      @hour, @min  = *time.to_s.split('.')
+      meridian = /pm|am/i.match(time.to_s)[0].downcase rescue nil
+      @hour, @min = *time.to_s.split('.')
       @hour = @hour.to_i
-      raise "invalid hour value for 'at'" if @hour > 23 
+      raise "invalid hour value for 'at'" if @hour > 12 && meridian
+        
+      case meridian
+        when 'am': @hour = 0 if @hour == 12 
+        when 'pm': @hour += 12 if @hour < 12
+      end
+      raise "invalid hour value for 'at'" if @hour > 23
 
       if @min
         @min = @min.ljust(2, '0').to_i
@@ -83,16 +90,6 @@ module Cronos
     end
     alias of_months of
 
-    def am
-      self
-    end
-    
-    # Modifies hour to be in 2nd half of day
-    def pm
-      @hour = hour.to_i + 12 if hour.to_i < 12
-      self
-    end
-
     def hourly
       @min  = 0
       @hour = nil
@@ -103,8 +100,6 @@ module Cronos
       @min   ||= 0
       @hour  ||= 0
       @day   = nil
-      @month = nil
-      @dow   = nil
       self
     end
     alias once_a_day daily
@@ -122,7 +117,7 @@ module Cronos
     def monthly
       @min   ||= 0
       @hour  ||= 0
-      @day   = 1
+      @day   ||= 1
       @month = nil
       @dow   = nil
       self
