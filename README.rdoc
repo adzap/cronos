@@ -20,7 +20,7 @@ you are after instead of trying to remember the cron syntax and conventions.
   
   cron.weekends.at(12.30).to_s => '30 12 * * 0,6'
 
-  cron.at(1.30).pm.daily.to_s => '30 13 * * *'
+  cron.at('1.30pm').daily.to_s => '30 13 * * *'
 
   cron.every(6).hours.on('15th').of(:january).to_s => '0 0,6,12,18 15 1 *' 
 
@@ -28,7 +28,7 @@ you are after instead of trying to remember the cron syntax and conventions.
 
   cron.at(14.45).on_days(:monday, :tuesday).to_s => '45 14 * * 1,2'
 
-=== Caveats
+== Caveats
 
 Certain combinations produce unintuitive results. They should be obvious but just in case I will
 list some. Such as
