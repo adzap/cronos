@@ -64,7 +64,7 @@ module Cronos
     #   on_days(:mon, :tues)
     #
     def days(*args)
-      list = args.collect {|day| DAYS.index(day.to_s.downcase[0..2].to_sym) }
+      list = args.map {|day| DAYS.index(day.to_s.downcase[0..2].to_sym) }
       @dow = list.join(',')
       self
     end
@@ -79,7 +79,7 @@ module Cronos
     #   of_months(1, 2, 3)
     #
     def of(*args)
-      list = args.collect {|month| MONTHS.index(month.to_s.downcase[0..2].to_sym) + 1 unless month.is_a?(Fixnum) }
+      list = args.map {|month| MONTHS.index(month.to_s.downcase[0..2].to_sym) + 1 unless month.is_a?(Fixnum) }
       @month = list.join(',') 
       self
     end
