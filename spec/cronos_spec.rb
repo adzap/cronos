@@ -149,6 +149,18 @@ describe Cronos::Interval do
     end
   end
 
+  describe "midnight method" do
+    it "should output interval to run at 00:00" do
+      interval.midnight.to_s.should == '0 0 * * *'
+    end
+  end
+
+  describe "midday method" do
+    it "should output interval to run at 12:00" do
+      interval.midday.to_s.should == '0 12 * * *'
+    end
+  end
+
   describe "weekly method" do
     it "should output interval to run on Sunday at 00:00 by default" do
       interval.weekly.to_s.should == '0 0 * * 0'

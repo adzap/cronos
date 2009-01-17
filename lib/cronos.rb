@@ -99,6 +99,20 @@ module Cronos
     end
     alias once_a_day daily
 
+    def midnight
+      @min  = 0
+      @hour = 0
+      self
+    end
+    alias at_midnight midnight
+
+    def midday
+      @min  = 0
+      @hour = 12
+      self
+    end
+    alias at_midday midday
+
     def weekly
       @min   ||= 0
       @hour  ||= 0
