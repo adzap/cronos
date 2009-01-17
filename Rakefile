@@ -5,7 +5,7 @@ require 'date'
 require 'spec/rake/spectask'
 
 GEM = "cronos"
-GEM_VERSION = "0.2.1"
+GEM_VERSION = "0.2.2"
 AUTHOR = "Adam Meehan"
 EMAIL = "adam.meehan@gmail.com"
 HOMEPAGE = "http://github.com/adzap/cronos"

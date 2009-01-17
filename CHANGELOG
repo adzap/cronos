@@ -1,2 +1,5 @@
+== 0.2.2 2009-01-17
+- fix to ensure string values in hash from to_hash method
+
 == 0.2.1 2009-01-17
 - added to_hash method with CronEdit compatible key names
