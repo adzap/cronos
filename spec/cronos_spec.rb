@@ -2,6 +2,14 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Cronos::Interval do
 
+  it "should return default interval for every minute" do
+    interval.to_s.should == '* * * * *'
+  end
+
+  it "should return hash of values from to_hash method" do
+    interval.to_hash.should == {:minute => '*', :hour => '*', :day => '*', :month => '*', :weekday => '*'}
+  end
+
   describe "at method" do
     it "should output interval from integer with hour as integer value and 0 minute" do
       interval.at(8).to_s.should == '0 8 * * *'

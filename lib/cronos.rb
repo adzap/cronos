@@ -137,6 +137,10 @@ module Cronos
       "#{min || '*'} #{hour || '*'} #{day || '*'} #{month || '*'} #{dow || '*'}"
     end
 
+    def to_hash
+      {:minute => min || '*', :hour => hour || '*', :day => day || '*', :month => month || '*', :weekday => dow || '*'}
+    end
+
     private
 
     def parse_time(time)
