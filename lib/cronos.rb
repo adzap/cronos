@@ -138,7 +138,13 @@ module Cronos
     end
 
     def to_hash
-      {:minute => min || '*', :hour => hour || '*', :day => day || '*', :month => month || '*', :weekday => dow || '*'}
+      {
+        :minute  => "#{min   || '*'}",
+        :hour    => "#{hour  || '*'}",
+        :day     => "#{day   || '*'}",
+        :month   => "#{month || '*'}",
+        :weekday => "#{dow   || '*'}"
+      }
     end
 
     private

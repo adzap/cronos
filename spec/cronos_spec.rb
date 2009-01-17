@@ -7,7 +7,7 @@ describe Cronos::Interval do
   end
 
   it "should return hash of values from to_hash method" do
-    interval.to_hash.should == {:minute => '*', :hour => '*', :day => '*', :month => '*', :weekday => '*'}
+    interval.at(2.01).on_the('3rd').of(:april).to_hash.should == {:minute => '1', :hour => '2', :day => '3', :month => '4', :weekday => '*'}
   end
 
   describe "at method" do
