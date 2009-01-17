@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.date = %q{2009-01-17}
   s.description = %q{Tool for generating cron intervals using a natural syntax}
   s.email = %q{adam.meehan@gmail.com}
-  s.extra_rdoc_files = ["README.rdoc", "LICENSE", "TODO"]
+  s.extra_rdoc_files = ["README.rdoc", "LICENSE", "TODO", "CHANGELOG"]
   s.files = ["LICENSE", "README.rdoc", "Rakefile", "TODO", "CHANGELOG", "lib/cronos.rb", "spec/spec_helper.rb", "spec/cronos_spec.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/adzap/cronos}
