@@ -33,8 +33,22 @@ module Cronos
     #   every(6).hours
     #   every(2).months
     #
-    def every(multiple)
-      RepeatInterval.new(multiple, self)
+    # or use as an alias for #on or #days
+    #   every(:monday)
+    #   every('February', :march)
+    #
+    def every(*multiple)
+      return RepeatInterval.new(multiple.first, self) if multiple.first.is_a?(Fixnum)
+
+      abbrs = multiple.map {|i| i.to_s.downcase[0..2].to_sym }
+
+      if abbrs.all? {|abbr| MONTHS.include?(abbr) }
+        of(*abbrs)
+      elsif abbrs.all? {|abbr| DAYS.include?(abbr) }
+        days(*abbrs)
+      else
+        raise "Unknown interval type passed to #every"
+      end
     end
 
     # Days of month:

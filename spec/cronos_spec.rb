@@ -253,6 +253,26 @@ describe Cronos::Interval do
     end
   end
   
+  describe "every(day_name)" do
+    it "should output interval for day symbol as day of week" do
+      interval.every(:sunday).to_s.should == '* * * * 0'
+    end
+
+    it "should output interval for list of days as days of week" do
+      interval.every(:thursay, 'Friday').to_s.should == '* * * * 4,5'
+    end
+  end
+
+  describe "every(month_name)" do
+    it "should output interval for month symbol as month" do
+      interval.every(:january).to_s.should == '* * * 1 *'
+    end
+
+    it "should output interval for list of months as months" do
+      interval.every(:february, 'March').to_s.should == '* * * 2,3 *'
+    end
+  end
+
   describe "combinations" do
     it "weekly.at(3.30) should output '30 3 * * 0'" do
       interval.weekly.at(3.30).to_s.should == '30 3 * * 0'
