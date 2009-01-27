@@ -50,7 +50,7 @@ module Cronos
       else
         list = args.collect {|day| day.to_s.to_i }
         @day = list.join(',')
-      end 
+      end
       self
     end
     alias on_the on
@@ -74,16 +74,25 @@ module Cronos
     # Months:
     #   of(:january)
     #   of('January')
-    #   of(:jan
+    #   of(:jan)
     #   of(:jan, :feb, :mar)
+    #   of(1..3)
+    #   of(1...4)
     #   of_months(1, 2, 3)
+    #   in(:january)
     #
     def of(*args)
-      list = args.map {|month| MONTHS.index(month.to_s.downcase[0..2].to_sym) + 1 unless month.is_a?(Fixnum) }
-      @month = list.join(',') 
+      if args.first.is_a?(Range)
+        list = Array(args.first)
+        @month = "#{list.first}-#{list.last}"
+      else
+        list = args.map {|month| MONTHS.index(month.to_s.downcase[0..2].to_sym) + 1 unless month.is_a?(Fixnum) }
+        @month = list.join(',')
+      end
       self
     end
     alias of_months of
+    alias in of
 
     def hourly
       @min  = 0
@@ -219,7 +228,7 @@ module Cronos
       def to_a
         @intervals
       end
-    end 
+    end
 
   end
 
