@@ -45,8 +45,8 @@ module Cronos
     #
     def on(*args)
       if args.first.is_a?(Range)
-        range = args.first
-        @day = "#{range.first.to_i}-#{range.last.to_i}"
+        list = Array(args.first)
+        @day = "#{list.first}-#{list.last}"
       else
         list = args.collect {|day| day.to_s.to_i }
         @day = list.join(',')
