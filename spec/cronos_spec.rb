@@ -53,8 +53,12 @@ describe Cronos::Interval do
       interval.on('15th').to_s.should == '* * 15 * *'
     end
 
-    it "should output interval from integer range as dashed day of month range " do
+    it "should output interval from inclusive range as dashed day of month range " do
       interval.on(15..17).to_s.should == '* * 15-17 * *'
+    end
+    
+    it "should output interval from exclusive range as dashed day of month range " do
+      interval.on(15...18).to_s.should == '* * 15-17 * *'
     end
 
     it "should output interval from integer array as day number list" do
@@ -89,6 +93,14 @@ describe Cronos::Interval do
 
     it "should output interval with comma seperated month numbers from array of string month names" do
       interval.of('January', 'February', 'March').to_s.should == '* * * 1,2,3 *'
+    end
+
+    it "should output interval from integer inclusive range as dashed month range " do
+      interval.of(1..3).to_s.should == '* * * 1-3 *'
+    end
+
+    it "should output interval from integer exclusive range as dashed month range " do
+      interval.of(1...4).to_s.should == '* * * 1-3 *'
     end
   end
 
