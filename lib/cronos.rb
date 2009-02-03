@@ -55,12 +55,12 @@ module Cronos
     #   on(13)
     #   on('13th')
     #   on(13..17)
+    #   on(13...18)
     #   on_the('13th')
     #
     def on(*args)
       if args.first.is_a?(Range)
-        list = Array(args.first)
-        @day = "#{list.first}-#{list.last}"
+        @day = format_range(args.first)
       else
         list = args.collect {|day| day.to_s.to_i }
         @day = list.join(',')
@@ -73,13 +73,19 @@ module Cronos
     #   days(:monday)
     #   days('Monday')
     #   days(:mon)
+    #   days(1..3)
+    #   days(1...4)
     #   on_day(:monday)
     #   days(:mon, :tues)
     #   on_days(:mon, :tues)
     #
     def days(*args)
-      list = args.map {|day| DAYS.index(day.to_s.downcase[0..2].to_sym) }
-      @dow = list.join(',')
+      if args.first.is_a?(Range)
+        @dow = format_range(args.first)
+      else
+        list = args.map {|day| DAYS.index(day.to_s.downcase[0..2].to_sym) }
+        @dow = list.join(',')
+      end
       self
     end
     alias on_days days
@@ -97,8 +103,7 @@ module Cronos
     #
     def of(*args)
       if args.first.is_a?(Range)
-        list = Array(args.first)
-        @month = "#{list.first}-#{list.last}"
+        @month = format_range(args.first)
       else
         list = args.map {|month| MONTHS.index(month.to_s.downcase[0..2].to_sym) + 1 unless month.is_a?(Fixnum) }
         @month = list.join(',')
@@ -195,6 +200,11 @@ module Cronos
       min ||= 0
 
       return hour, min, meridian
+    end
+
+    def format_range(range)
+      list = Array(range).sort
+      "#{list.first}-#{list.last}"
     end
 
     class RepeatInterval

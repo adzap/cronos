@@ -128,6 +128,14 @@ describe Cronos::Interval do
     it "should output interval with day numbers from array of string day names" do
       interval.days('Monday', 'Wednesday', 'Friday').to_s.should == '* * * * 1,3,5'
     end
+
+    it "should output interval from integer inclusive range as dashed dow range " do
+      interval.days(1..3).to_s.should == '* * * * 1-3'
+    end
+
+    it "should output interval from integer exclusive range as dashed dow range " do
+      interval.days(1...4).to_s.should == '* * * * 1-3'
+    end
   end
 
   describe "hourly method" do
