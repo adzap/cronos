@@ -3,9 +3,10 @@ require 'rake/gempackagetask'
 require 'rubygems/specification'
 require 'date'
 require 'spec/rake/spectask'
+require 'lib/cronos'
 
 GEM = "cronos"
-GEM_VERSION = "0.2.2"
+GEM_VERSION = Cronos::VERSION
 AUTHOR = "Adam Meehan"
 EMAIL = "adam.meehan@gmail.com"
 HOMEPAGE = "http://github.com/adzap/cronos"

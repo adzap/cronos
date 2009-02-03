@@ -1,3 +1,6 @@
+== 0.3.1 2009-02-03
+- added ranges to #days
+
 == 0.3.0 2009-01-27
 - better range handling for #on and #of including support for end excluded ranges
 - aliased #of with #in

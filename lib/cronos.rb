@@ -1,5 +1,7 @@
 module Cronos
 
+  VERSION = '0.3.1'
+
   class Interval
     attr_accessor :min, :hour, :day, :month, :dow
 
