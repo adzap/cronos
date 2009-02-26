@@ -57,6 +57,10 @@ describe Cronos::Interval do
       interval.on(15..17).to_s.should == '* * 15-17 * *'
     end
     
+    it "should output interval from string inclusive range as dashed day of month range " do
+      interval.on('15th'..'17th').to_s.should == '* * 15-17 * *'
+    end
+
     it "should output interval from exclusive range as dashed day of month range " do
       interval.on(15...18).to_s.should == '* * 15-17 * *'
     end
@@ -99,6 +103,10 @@ describe Cronos::Interval do
       interval.of(1..3).to_s.should == '* * * 1-3 *'
     end
 
+    it "should output interval from string inclusive range as dashed month range " do
+      interval.of('jan'..'mar').to_s.should == '* * * 1-3 *'
+    end
+
     it "should output interval from integer exclusive range as dashed month range " do
       interval.of(1...4).to_s.should == '* * * 1-3 *'
     end
@@ -131,6 +139,10 @@ describe Cronos::Interval do
 
     it "should output interval from integer inclusive range as dashed dow range " do
       interval.days(1..3).to_s.should == '* * * * 1-3'
+    end
+
+    it "should output interval from string inclusive range as dashed dow range " do
+      interval.days('mon'..'wed').to_s.should == '* * * * 1-3'
     end
 
     it "should output interval from integer exclusive range as dashed dow range " do

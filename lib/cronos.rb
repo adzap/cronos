@@ -5,7 +5,7 @@ module Cronos
   class Interval
     attr_accessor :min, :hour, :day, :month, :dow
 
-    MONTHS = [:jan, :feb, :mar, :apr, :may, :jun, :jul, :aug, :sep, :oct, :nov, :dec]
+    MONTHS = [nil, :jan, :feb, :mar, :apr, :may, :jun, :jul, :aug, :sep, :oct, :nov, :dec]
 
     DAYS = [:sun, :mon, :tue, :wed, :thu, :fri, :sat]
 
@@ -42,12 +42,10 @@ module Cronos
     def every(*multiple)
       return RepeatInterval.new(multiple.first, self) if multiple.first.is_a?(Fixnum)
 
-      abbrs = multiple.map {|i| i.to_s.downcase[0..2].to_sym }
-
-      if abbrs.all? {|abbr| MONTHS.include?(abbr) }
-        of(*abbrs)
-      elsif abbrs.all? {|abbr| DAYS.include?(abbr) }
-        days(*abbrs)
+      if multiple.all? {|abbr| is_month?(abbr) }
+        of(*multiple)
+      elsif multiple.all? {|abbr| is_day?(abbr) }
+        days(*multiple)
       else
         raise "Unknown interval type passed to #every"
       end
@@ -57,6 +55,7 @@ module Cronos
     #   on(13)
     #   on('13th')
     #   on(13..17)
+    #   on('13th'..'17th')
     #   on(13...18)
     #   on_the('13th')
     #
@@ -76,6 +75,7 @@ module Cronos
     #   days('Monday')
     #   days(:mon)
     #   days(1..3)
+    #   days('mon'..'wed')
     #   days(1...4)
     #   on_day(:monday)
     #   days(:mon, :tues)
@@ -85,7 +85,7 @@ module Cronos
       if args.first.is_a?(Range)
         @dow = format_range(args.first)
       else
-        list = args.map {|day| DAYS.index(day.to_s.downcase[0..2].to_sym) }
+        list = args.map {|day| day_value(day) unless day.is_a?(Fixnum) }
         @dow = list.join(',')
       end
       self
@@ -99,6 +99,7 @@ module Cronos
     #   of(:jan)
     #   of(:jan, :feb, :mar)
     #   of(1..3)
+    #   of('jan'..'mar')
     #   of(1...4)
     #   of_months(1, 2, 3)
     #   in(:january)
@@ -107,7 +108,7 @@ module Cronos
       if args.first.is_a?(Range)
         @month = format_range(args.first)
       else
-        list = args.map {|month| MONTHS.index(month.to_s.downcase[0..2].to_sym) + 1 unless month.is_a?(Fixnum) }
+        list = args.map {|month| month_value(month) unless month.is_a?(Fixnum) }
         @month = list.join(',')
       end
       self
@@ -205,8 +206,35 @@ module Cronos
     end
 
     def format_range(range)
-      list = Array(range).sort
+      values = [range.first, range.last]
+
+      if values.all? {|v| v.to_i > 0 }
+        first, last = values.first.to_i, values.last.to_i
+      elsif values.all? {|abbr| is_month?(abbr) }
+        first, last = month_value(values.first), month_value(values.last)
+      elsif values.all? {|abbr| is_day?(abbr) }
+        first, last = day_value(values.first), day_value(values.last)
+      end
+
+      int_range = range.exclude_end? ? first...last : first..last
+      list = Array(int_range).sort
       "#{list.first}-#{list.last}"
+    end
+
+    def is_month?(value)
+      MONTHS.include?(value.to_s.downcase[0..2].to_sym)
+    end
+
+    def month_value(value)
+      MONTHS.index(value.to_s.downcase[0..2].to_sym)
+    end
+
+    def is_day?(value)
+      DAYS.include?(value.to_s.downcase[0..2].to_sym)
+    end
+
+    def day_value(value)
+      DAYS.index(value.to_s.downcase[0..2].to_sym)
     end
 
     class RepeatInterval
