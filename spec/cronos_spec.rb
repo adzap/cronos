@@ -1,5 +1,13 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
+describe Cronos do
+
+  it "should return task interval instance from schedule method" do
+    Cronos.schedule('ls').should be_kind_of(Cronos::TaskInterval)
+  end
+
+end
+
 describe Cronos::Interval do
 
   it "should return default interval for every minute" do
@@ -338,4 +346,12 @@ describe Cronos::Interval do
   def interval
     @interval ||= Cronos::Interval.new
   end
+end
+
+describe Cronos::TaskInterval do
+
+  it "should output task at end of interval string" do
+    Cronos::TaskInterval.new('ls').at('12pm').to_s.should == '0 12 * * * ls'
+  end
+
 end

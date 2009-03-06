@@ -2,6 +2,10 @@ module Cronos
 
   VERSION = '0.3.1'
 
+  def self.schedule(task)
+    TaskInterval.new(task)
+  end
+
   class Interval
     attr_accessor :min, :hour, :day, :month, :dow
 
@@ -37,7 +41,10 @@ module Cronos
     #
     # or use as an alias for #on or #days
     #   every(:monday)
+    #   every(:mon, :tues)
+    #   every('Monday'.. 'Wednesday')
     #   every('February', :march)
+    #   every('Feb'..'June')
     #
     def every(*multiple)
       return RepeatInterval.new(multiple.first, self) if multiple.first.is_a?(Fixnum)
@@ -284,6 +291,18 @@ module Cronos
       end
     end
 
+  end
+
+  class TaskInterval < Interval
+    attr_accessor :task
+
+    def initialize(task)
+      @task = task
+    end
+
+    def to_s
+      "#{super} #{@task}"
+    end
   end
 
 end
