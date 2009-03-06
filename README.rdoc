@@ -10,32 +10,40 @@ you are after instead of trying to remember the cron syntax and conventions.
 
   cron = Cronos::Interval
   
-  cron.new.hourly.to_s 
+  puts cron.new.hourly
   # => '0 * * * *'
 
-  cron.new.daily.to_s 
+  puts cron.new.daily
   # => '0 0 * * *'
   
-  cron.new.weekly.to_s 
+  puts cron.new.weekly
   # => '0 0 * * 0'
 
-  cron.new.weekdays.at(12.30).to_s 
+  puts cron.new.weekdays.at(12.30)
   # => '30 12 * * 1-5'
   
-  cron.new.weekends.at(12.30).to_s
+  puts cron.new.weekends.at(12.30)
   # => '30 12 * * 0,6'
 
-  cron.new.at('1.30pm').daily.to_s
+  puts cron.new.at('1.30pm').daily
   # => '30 13 * * *'
 
-  cron.new.every(6).hours.on('15th').of(:january).to_s
+  puts cron.new.every(6).hours.on('15th').of(:january)
   # => '0 0,6,12,18 15 1 *' 
 
-  cron.new.every(20).minutes.on(15..18).of(:jan, :feb, :mar).to_s
+  puts cron.new.every(20).minutes.on('15th'..'18th').of(:jan, :feb, :mar)
   # => '0,20,40 * 15-18 1,2,3 *'
 
-  cron.new.at(14.45).on_days(:monday, :tuesday).to_s
+  puts cron.new.at(14.45).every(:monday, :tuesday)
   # => '45 14 * * 1,2'
+
+
+You can also output the whole cron task string using the schedule method:
+
+  puts Cronos.schedule('some_task').every(:Sunday).at('3am')
+  # => '0 3 * * 0 some_task'
+
+This does not actually schedule the task in cron. Cronos is merely a DSL to output the cron intervals.
 
 == Caveats
 
