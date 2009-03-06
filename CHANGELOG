@@ -1,3 +1,7 @@
+== 0.4.0 2009-03-06
+- every method now handles days and months eg. every(:mon, :tue), every('mon'..'wed'), every(:jan, :feb) etc.
+- added schedule method which takes a command and outputs it in the cron string
+
 == 0.3.1 2009-02-03
 - added ranges to #days
 
