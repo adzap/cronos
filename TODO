@@ -1,3 +1,7 @@
 TODO:
 - more examples
 - more everything as its a start
+- default time setting, when time not explicit, instead of midnight
+- instantiate interval from cron string
+- say method to output English description as comment at end of cron interval
+
