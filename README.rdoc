@@ -68,7 +68,7 @@ is a strange combination anyway, the result is the union of both and not the int
 
 == Install
 
-  sudo gem install adzap-cronos -s http://gems.github.com
+  sudo gem install cronos
   
 
 == Credits
